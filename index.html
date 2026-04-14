@@ -242,18 +242,25 @@ document.getElementById("form").addEventListener("submit", function(e) {
         }
     }
 
-    fetch("https://script.google.com/macros/s/AKfycbxQM1RDwOMmDDoHZnatODOsRQV9N8NsvkG4fYlxOXYYwibGQySrFKoENZulZ1rxRQg/exec", {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.text())
-    .then(() => {
-        status.innerText = "✅ ENVIADO COM SUCESSO!";
-        setTimeout(() => location.reload(), 1500);
-    });
+    <!-- (SEU CÓDIGO INTEIRO PERMANECE IGUAL ATÉ A PARTE DO FETCH) -->
 
+fetch("https://script.google.com/macros/s/AKfycbxQM1RDwOMmDDoHZnatODOsRQV9N8NsvkG4fYlxOXYYwibGQySrFKoENZulZ1rxRQg/exec", {
+    method: "POST",
+    body: formData
+})
+.then(res => res.text())
+.then(result => {
+
+    if (result === "CPF_DUPLICADO") {
+        status.innerText = "❌ CPF JÁ CADASTRADO";
+        btn.disabled = false;
+        return;
+    }
+
+    status.innerText = "✅ ENVIADO COM SUCESSO!";
+    setTimeout(() => location.reload(), 1500);
+})
+.catch(() => {
+    status.innerText = "❌ ERRO AO ENVIAR";
+    btn.disabled = false;
 });
-</script>
-
-</body>
-</html>
