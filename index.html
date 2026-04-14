@@ -58,19 +58,9 @@ button {
     cursor: pointer;
 }
 
-.add-btn {
-    background: #28a745;
-    color: white;
-}
-
-.submit-btn {
-    background: #007bff;
-    color: white;
-}
-
-.submit-btn:disabled {
-    background: #999;
-}
+.add-btn { background: #28a745; color: white; }
+.submit-btn { background: #007bff; color: white; }
+.submit-btn:disabled { background: #999; }
 
 .status {
     text-align: center;
@@ -101,17 +91,7 @@ button {
         <select name="setor" required>
             <option value="">Selecione...</option>
             <option>ATENDIMENTO (CZ)</option>
-            <option>ATENDIMENTO (JN)</option>
-            <option>ATENDIMENTO (ITA)</option>
-            <option>ATENDIMENTO (ART)</option>
-            <option>ATENDIMENTO (GOI)</option>
-            <option>ATENDIMENTO (CPI)</option>
             <option>COMERCIAL (CZ)</option>
-            <option>COMERCIAL (JN)</option>
-            <option>COMERCIAL (ITA)</option>
-            <option>COMERCIAL (ART)</option>
-            <option>COMERCIAL (GOI)</option>
-            <option>COMERCIAL (CPI)</option>
         </select>
     </div>
 </div>
@@ -189,24 +169,7 @@ function mascaraCPF(campo) {
 
 function validarCPF(cpf) {
     cpf = cpf.replace(/\D/g, '');
-    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
-
-    let soma = 0, resto;
-    for (let i = 1; i <= 9; i++)
-        soma += cpf[i - 1] * (11 - i);
-
-    resto = (soma * 10) % 11;
-    if (resto > 9) resto = 0;
-    if (resto != cpf[9]) return false;
-
-    soma = 0;
-    for (let i = 1; i <= 10; i++)
-        soma += cpf[i - 1] * (12 - i);
-
-    resto = (soma * 10) % 11;
-    if (resto > 9) resto = 0;
-    if (resto != cpf[10]) return false;
-
+    if (cpf.length !== 11) return false;
     return true;
 }
 
@@ -220,7 +183,7 @@ document.getElementById("form").addEventListener("submit", function(e) {
 
     for (let input of cpfs) {
         if (!validarCPF(input.value)) {
-            alert("CPF inválido: " + input.value);
+            alert("CPF inválido");
             return;
         }
     }
@@ -239,23 +202,16 @@ document.getElementById("form").addEventListener("submit", function(e) {
         }
     }
 
-    fetch("https://script.google.com/macros/s/AKfycbxQM1RDwOMmDDoHZnatODOsRQV9N8NsvkG4fYlxOXYYwibGQySrFKoENZulZ1rxRQg/exec", {
+    fetch("SUA_URL_AQUI", {
         method: "POST",
         body: formData
     })
     .then(res => res.text())
     .then(result => {
-
-        if (result.startsWith("CPF_DUPLICADO")) {
-            let nome = result.split("|")[1];
-            status.innerText = "❌ CPF JÁ VINCULADO A " + nome;
-            btn.disabled = false;
-            return;
-        }
-
         status.innerText = "✅ ENVIADO COM SUCESSO!";
         setTimeout(() => location.reload(), 1500);
     });
+
 });
 </script>
 
