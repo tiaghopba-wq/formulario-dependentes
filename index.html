@@ -45,7 +45,6 @@ input, select {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    text-transform: uppercase;
 }
 
 button {
@@ -58,9 +57,20 @@ button {
     cursor: pointer;
 }
 
-.add-btn { background: #28a745; color: white; }
-.submit-btn { background: #007bff; color: white; }
-.submit-btn:disabled { background: #999; }
+.add-btn {
+    background: #28a745;
+    color: white;
+}
+
+.submit-btn {
+    background: #007bff;
+    color: white;
+}
+
+.submit-btn:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
 
 .status {
     text-align: center;
@@ -74,87 +84,127 @@ button {
 
 <div class="container">
 
-<img src="./logo.png" class="logo">
+<img src="logo.png" class="logo">
 
 <h2>Cadastro de Dependentes</h2>
 
 <form id="form">
 
-<div class="form-row">
-    <div class="form-group">
-        <label>Nome do Colaborador</label>
-        <input type="text" name="colaborador" oninput="maiusculo(this)" required>
+    <div class="form-row">
+        <div class="form-group">
+            <label>Nome do Colaborador</label>
+            <input type="text" name="colaborador" required>
+        </div>
+
+        <div class="form-group">
+            <label>Setor</label>
+            <select name="setor" required>
+                <option>Atendimento (Cz)</option>
+                <option>Atendimento (Jn)</option>
+                <option>Atendimento (Ita)</option>
+                <option>Atendimento (Art)</option>
+                <option>Atendimento (Goi)</option>
+                <option>Atendimento (CPi)</option>
+
+                <option>Comercial (Cz)</option>
+                <option>Comercial (Jn)</option>
+                <option>Comercial (Ita)</option>
+                <option>Comercial (Art)</option>
+                <option>Comercial (Goi)</option>
+                <option>Comercial (CPi)</option>
+
+                <option>Contratos (Cz)</option>
+                <option>Contratos (Jn)</option>
+                <option>Contratos (Ita)</option>
+                <option>Contratos (Art)</option>
+                <option>Contratos (Goi)</option>
+                <option>Contratos (CPi)</option>
+
+                <option>Estoque (Cz)</option>
+                <option>Estoque (Jn)</option>
+                <option>Estoque (Ita)</option>
+                <option>Estoque (Art)</option>
+                <option>Estoque (Goi)</option>
+                <option>Estoque (CPi)</option>
+
+                <option>Faturamento (Cz)</option>
+                <option>Faturamento (Jn)</option>
+                <option>Faturamento (Ita)</option>
+                <option>Faturamento (Art)</option>
+                <option>Faturamento (Goi)</option>
+                <option>Faturamento (CPi)</option>
+
+                <option>Financeiro (Cz)</option>
+                <option>Financeiro (Jn)</option>
+                <option>Financeiro (Ita)</option>
+                <option>Financeiro (Art)</option>
+                <option>Financeiro (Goi)</option>
+                <option>Financeiro (CPi)</option>
+
+                <option>Laboratório de Apoio (Cz)</option>
+                <option>Laboratório de Apoio (Jn)</option>
+                <option>Laboratório de Apoio (Ita)</option>
+                <option>Laboratório de Apoio (Art)</option>
+                <option>Laboratório de Apoio (Goi)</option>
+                <option>Laboratório de Apoio (CPi)</option>
+
+                <option>NAC (Cz)</option>
+                <option>NAC (Jn)</option>
+                <option>NAC (Ita)</option>
+                <option>NAC (Art)</option>
+                <option>NAC (Goi)</option>
+                <option>NAC (CPi)</option>
+
+                <option>NTO (Cz)</option>
+                <option>NTO (Jn)</option>
+                <option>NTO (Ita)</option>
+                <option>NTO (Art)</option>
+                <option>NTO (Goi)</option>
+                <option>NTO (CPi)</option>
+
+                <option>Patrimônio/Manutenção (Cz)</option>
+                <option>Patrimônio/Manutenção (Jn)</option>
+                <option>Patrimônio/Manutenção (Ita)</option>
+                <option>Patrimônio/Manutenção (Art)</option>
+                <option>Patrimônio/Manutenção (Goi)</option>
+                <option>Patrimônio/Manutenção (CPi)</option>
+
+                <option>Qualidade (Cz)</option>
+                <option>Qualidade (Jn)</option>
+                <option>Qualidade (Ita)</option>
+                <option>Qualidade (Art)</option>
+                <option>Qualidade (Goi)</option>
+                <option>Qualidade (CPi)</option>
+
+                <option>Suprimentos (Cz)</option>
+                <option>Suprimentos (Jn)</option>
+                <option>Suprimentos (Ita)</option>
+                <option>Suprimentos (Art)</option>
+                <option>Suprimentos (Goi)</option>
+                <option>Suprimentos (CPi)</option>
+
+                <option>Tecnologia da Informação (Cz)</option>
+                <option>Tecnologia da Informação (Jn)</option>
+                <option>Tecnologia da Informação (Ita)</option>
+                <option>Tecnologia da Informação (Art)</option>
+                <option>Tecnologia da Informação (Goi)</option>
+                <option>Tecnologia da Informação (CPi)</option>
+            </select>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Setor</label>
-        <select name="setor" required>
-            <option value="">Selecione...</option>
-            <option>Atendimento (Cz)</option>
-            <option>Atendimento (Jn)</option>
-            <option>Atendimento (Ita)</option>
-            <option>Atendimento (Art)</option>
-            <option>Atendimento (Goi)</option>
-            <option>Atendimento (CPi)</option>
-            <option>Comercial (Cz)</option>
-            <option>Comercial (Jn)</option>
-            <option>Comercial (Ita)</option>
-            <option>Comercial (Art)</option>
-            <option>Comercial (Goi)</option>
-            <option>Comercial (CPi)</option>
-            <option>Contratos (Cz)</option>
-            <option>Estoque (Cz)</option>
-            <option>Estoque (Jn)</option>
-            <option>Estoque (Ita)</option>
-            <option>Estoque (Art)</option>
-            <option>Faturamento (Cz)</option>
-            <option>Faturamento (Jn)</option>
-            <option>Faturamento (Ita)</option>
-            <option>Faturamento (Art)</option>
-            <option>Financeiro (Cz)</option>
-            <option>Financeiro (Jn)</option>
-            <option>Financeiro (Ita)</option>
-            <option>Financeiro (Art)</option>
-            <option>Laboratório de Apoio (Cz)</option>
-            <option>NAC (Cz)</option>
-            <option>NAC (Jn)</option>
-            <option>NAC (Ita)</option>
-            <option>NAC (Art)</option>
-            <option>NTO (Cz)</option>
-            <option>NTO (Jn)</option>
-            <option>NTO (Ita)</option>
-            <option>NTO (Art)</option>
-            <option>Patrimônio/Manutenção (Cz)</option>
-            <option>Qualidade (Cz)</option>
-            <option>Qualidade (Jn)</option>
-            <option>Qualidade (Ita)</option>
-            <option>Qualidade (Art)</option>
-            <option>Suprimentos (Cz)</option>
-            <option>Suprimentos (Jn)</option>
-            <option>Suprimentos (Ita)</option>
-            <option>Suprimentos (Art)</option>
-            <option>Tecnologia da Informação (Cz)</option>
-        </select>
-    </div>
-</div>
+    <div id="dependentes"></div>
 
-<div id="dependentes"></div>
+    <button type="button" class="add-btn" onclick="addDependente()">+ Adicionar Dependente</button>
+    <button type="submit" class="submit-btn" id="btnEnviar">Enviar</button>
 
-<button type="button" class="add-btn" onclick="addDependente()">+ Adicionar Dependente</button>
-<button type="submit" class="submit-btn" id="btnEnviar">Enviar</button>
-
-<div class="status" id="status"></div>
+    <div class="status" id="status"></div>
 
 </form>
 </div>
 
 <script>
-
 let contador = 0;
-
-function maiusculo(campo) {
-    campo.value = campo.value.toUpperCase();
-}
 
 function addDependente() {
     contador++;
@@ -168,7 +218,7 @@ function addDependente() {
         <div class="form-row">
             <div class="form-group">
                 <label>Nome</label>
-                <input type="text" name="nome_${contador}" oninput="maiusculo(this)" required>
+                <input type="text" name="nome_${contador}" required>
             </div>
 
             <div class="form-group">
@@ -186,11 +236,11 @@ function addDependente() {
             <div class="form-group">
                 <label>Parentesco</label>
                 <select name="parentesco_${contador}">
-                    <option>FILHO(A)</option>
-                    <option>CÔNJUGE</option>
-                    <option>AVÔ</option>
-                    <option>AVÓ</option>
-                    <option>OUTRO</option>
+                    <option>Filho(a)</option>
+                    <option>Cônjuge</option>
+                    <option>Avô</option>
+                    <option>Avó</option>
+                    <option>Outro</option>
                 </select>
             </div>
         </div>
@@ -202,19 +252,34 @@ function addDependente() {
 addDependente();
 
 function mascaraCPF(campo) {
-    let cpf = campo.value.replace(/\D/g, '');
+    let v = campo.value.replace(/\D/g, '');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    campo.value = v;
+}
 
-    if (cpf.length > 11) cpf = cpf.slice(0, 11);
+function validarCPF(cpf) {
+    cpf = cpf.replace(/\D/g, '');
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
 
-    if (cpf.length > 9) {
-        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
-    } else if (cpf.length > 6) {
-        cpf = cpf.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
-    } else if (cpf.length > 3) {
-        cpf = cpf.replace(/(\d{3})(\d+)/, '$1.$2');
-    }
+    let soma = 0, resto;
+    for (let i = 1; i <= 9; i++)
+        soma += cpf[i - 1] * (11 - i);
 
-    campo.value = cpf;
+    resto = (soma * 10) % 11;
+    if (resto > 9) resto = 0;
+    if (resto != cpf[9]) return false;
+
+    soma = 0;
+    for (let i = 1; i <= 10; i++)
+        soma += cpf[i - 1] * (12 - i);
+
+    resto = (soma * 10) % 11;
+    if (resto > 9) resto = 0;
+    if (resto != cpf[10]) return false;
+
+    return true;
 }
 
 document.getElementById("form").addEventListener("submit", function(e) {
@@ -223,44 +288,33 @@ document.getElementById("form").addEventListener("submit", function(e) {
     let btn = document.getElementById("btnEnviar");
     let status = document.getElementById("status");
 
-    // 🔥 GARANTE CPF FORMATADO
-    document.querySelectorAll("input[name^='cpf_']").forEach(input => {
-        mascaraCPF(input);
-    });
+    let cpfs = document.querySelectorAll("input[name^='cpf_']");
 
-    btn.disabled = true;
-    status.innerText = "ENVIANDO...";
-
-    let formData = new FormData(this);
-
-    // 🔥 MAIÚSCULO (exceto CPF/data)
-    for (let [key, value] of formData.entries()) {
-        if (key.startsWith("cpf") || key.startsWith("data")) continue;
-
-        if (typeof value === "string") {
-            formData.set(key, value.toUpperCase());
+    for (let input of cpfs) {
+        if (!validarCPF(input.value)) {
+            alert("CPF inválido: " + input.value);
+            input.focus();
+            return;
         }
     }
 
-    <!-- (SEU CÓDIGO INTEIRO PERMANECE IGUAL ATÉ A PARTE DO FETCH) -->
+    btn.disabled = true;
+    status.innerText = "Enviando...";
 
-fetch("https://script.google.com/macros/s/AKfycbxQM1RDwOMmDDoHZnatODOsRQV9N8NsvkG4fYlxOXYYwibGQySrFKoENZulZ1rxRQg/exec", {
-    method: "POST",
-    body: formData
-})
-.then(res => res.text())
-.then(result => {
-
-    if (result === "CPF_DUPLICADO") {
-        status.innerText = "❌ CPF JÁ CADASTRADO";
+    fetch("https://script.google.com/macros/s/AKfycbxQM1RDwOMmDDoHZnatODOsRQV9N8NsvkG4fYlxOXYYwibGQySrFKoENZulZ1rxRQg/exec", {
+        method: "POST",
+        body: new FormData(this)
+    })
+    .then(() => {
+        status.innerText = "✅ Enviado com sucesso!";
+        setTimeout(() => location.reload(), 1500);
+    })
+    .catch(() => {
+        status.innerText = "❌ Erro ao enviar";
         btn.disabled = false;
-        return;
-    }
-
-    status.innerText = "✅ ENVIADO COM SUCESSO!";
-    setTimeout(() => location.reload(), 1500);
-})
-.catch(() => {
-    status.innerText = "❌ ERRO AO ENVIAR";
-    btn.disabled = false;
+    });
 });
+</script>
+
+</body>
+</html>
