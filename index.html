@@ -19,6 +19,12 @@ body {
     margin: auto;
 }
 
+.logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 250px;
+}
+
 h2 {
     text-align: center;
 }
@@ -60,25 +66,92 @@ button {
     background: #007bff;
     color: white;
 }
+
+.submit-btn:disabled {
+    background: #999;
+}
+
+.status {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+
+<img src="./logo.png" class="logo">
+
 <h2>Cadastro de Dependentes</h2>
 
 <form id="form">
 
+<div class="form-row">
     <div class="form-group">
         <label>Nome do Colaborador</label>
         <input type="text" name="colaborador" required>
     </div>
 
-    <div id="dependentes"></div>
+    <div class="form-group">
+            <label>Setor</label>
+            <select name="setor" required>
+                <option>Atendimento (Cz)</option>
+                <option>Atendimento (Jn)</option>
+                <option>Atendimento (Ita)</option>
+                <option>Atendimento (Art)</option>
+                <option>Atendimento (Goi)</option>
+                <option>Atendimento (CPi)</option>
+                <option>Comercial (Cz)</option>
+                <option>Comercial (Jn)</option>
+                <option>Comercial (Ita)</option>
+                <option>Comercial (Art)</option>
+                <option>Comercial (Goi)</option>
+                <option>Comercial (CPi)</option>
+                <option>Contratos (Cz)</option>
+                <option>Estoque (Cz)</option>
+                <option>Estoque (Jn)</option>
+                <option>Estoque (Ita)</option>
+                <option>Estoque (Art)</option>
+                <option>Faturamento (Cz)</option>
+                <option>Faturamento (Jn)</option>
+                <option>Faturamento (Ita)</option>
+                <option>Faturamento (Art)</option>
+                <option>Financeiro (Cz)</option>
+                <option>Financeiro (Jn)</option>
+                <option>Financeiro (Ita)</option>
+                <option>Financeiro (Art)</option>
+                <option>Laboratório de Apoio (Cz)</option>
+                <option>NAC (Cz)</option>
+                <option>NAC (Jn)</option>
+                <option>NAC (Ita)</option>
+                <option>NAC (Art)</option>
+                <option>NTO (Cz)</option>
+                <option>NTO (Jn)</option>
+                <option>NTO (Ita)</option>
+                <option>NTO (Art)</option>
+                <option>Patrimônio/Manutenção (Cz)</option>
+                <option>Qualidade (Cz)</option>
+                <option>Qualidade (Jn)</option>
+                <option>Qualidade (Ita)</option>
+                <option>Qualidade (Art)</option>
+                <option>Suprimentos (Cz)</option>
+                <option>Suprimentos (Jn)</option>
+                <option>Suprimentos (Ita)</option>
+                <option>Suprimentos (Art)</option>
+                <option>Tecnologia da Informação (Cz)</option>
+        </select>
+    </div>
+</div>
 
-    <button type="button" class="add-btn" onclick="addDependente()">+ Adicionar Dependente</button>
-    <button type="submit" class="submit-btn">Enviar</button>
+<div id="dependentes"></div>
+
+<button type="button" class="add-btn" onclick="addDependente()">+ Adicionar Dependente</button>
+<button type="submit" class="submit-btn" id="btnEnviar">Enviar</button>
+
+<div class="status" id="status"></div>
 
 </form>
 </div>
@@ -119,9 +192,9 @@ function addDependente() {
                 <select name="parentesco_${contador}">
                     <option>Filho(a)</option>
                     <option>Cônjuge</option>
-                    <option>Pai</option>
-                    <option>Mãe</option>
-                    <option>Avô ou Avó</option>
+                    <option>Avô</option>
+                    <option>Avó</option>
+                    <option>Outro</option>
                 </select>
             </div>
         </div>
@@ -130,77 +203,75 @@ function addDependente() {
     document.getElementById("dependentes").appendChild(div);
 }
 
-// adiciona 1 dependente inicial
 addDependente();
 
-
-// 🔥 MÁSCARA CPF
 function mascaraCPF(campo) {
     let v = campo.value.replace(/\D/g, '');
-
     v = v.replace(/(\d{3})(\d)/, '$1.$2');
     v = v.replace(/(\d{3})(\d)/, '$1.$2');
     v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-
     campo.value = v;
 }
 
-
-// 🔥 VALIDAÇÃO REAL CPF
 function validarCPF(cpf) {
     cpf = cpf.replace(/\D/g, '');
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
 
-    if (cpf.length !== 11) return false;
-    if (/^(\d)\1{10}$/.test(cpf)) return false;
-
-    let soma = 0;
-    let resto;
-
+    let soma = 0, resto;
     for (let i = 1; i <= 9; i++)
-        soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+        soma += cpf[i - 1] * (11 - i);
 
     resto = (soma * 10) % 11;
-    if (resto === 10 || resto === 11) resto = 0;
-    if (resto !== parseInt(cpf.substring(9, 10))) return false;
+    if (resto > 9) resto = 0;
+    if (resto != cpf[9]) return false;
 
     soma = 0;
-
     for (let i = 1; i <= 10; i++)
-        soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+        soma += cpf[i - 1] * (12 - i);
 
     resto = (soma * 10) % 11;
-    if (resto === 10 || resto === 11) resto = 0;
-    if (resto !== parseInt(cpf.substring(10, 11))) return false;
+    if (resto > 9) resto = 0;
+    if (resto != cpf[10]) return false;
 
     return true;
 }
 
-
-// 🚀 SUBMIT COM VALIDAÇÃO
 document.getElementById("form").addEventListener("submit", function(e) {
     e.preventDefault();
+
+    let btn = document.getElementById("btnEnviar");
+    let status = document.getElementById("status");
 
     let cpfs = document.querySelectorAll("input[name^='cpf_']");
 
     for (let input of cpfs) {
         if (!validarCPF(input.value)) {
             alert("CPF inválido: " + input.value);
-            input.focus();
             return;
         }
     }
+
+    btn.disabled = true;
+    status.innerText = "Enviando...";
 
     fetch("https://script.google.com/macros/s/AKfycbxQM1RDwOMmDDoHZnatODOsRQV9N8NsvkG4fYlxOXYYwibGQySrFKoENZulZ1rxRQg/exec", {
         method: "POST",
         body: new FormData(this)
     })
-    .then(() => {
-        alert("Dados enviados com sucesso!");
-        location.reload();
-    })
-    .catch(() => alert("Erro ao enviar"));
-});
+    .then(res => res.text())
+    .then(result => {
 
+        if (result.startsWith("CPF_DUPLICADO")) {
+            let nome = result.split("|")[1];
+            status.innerText = "❌ CPF já vinculado a " + nome;
+            btn.disabled = false;
+            return;
+        }
+
+        status.innerText = "✅ Enviado com sucesso!";
+        setTimeout(() => location.reload(), 1500);
+    });
+});
 </script>
 
 </body>
