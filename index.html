@@ -45,6 +45,7 @@ input, select {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    text-transform: uppercase;
 }
 
 button {
@@ -92,56 +93,25 @@ button {
 <div class="form-row">
     <div class="form-group">
         <label>Nome do Colaborador</label>
-        <input type="text" name="colaborador" required>
+        <input type="text" name="colaborador" oninput="maiusculo(this)" required>
     </div>
 
     <div class="form-group">
-            <label>Setor</label>
-            <select name="setor" required>
-                <option>Atendimento (Cz)</option>
-                <option>Atendimento (Jn)</option>
-                <option>Atendimento (Ita)</option>
-                <option>Atendimento (Art)</option>
-                <option>Atendimento (Goi)</option>
-                <option>Atendimento (CPi)</option>
-                <option>Comercial (Cz)</option>
-                <option>Comercial (Jn)</option>
-                <option>Comercial (Ita)</option>
-                <option>Comercial (Art)</option>
-                <option>Comercial (Goi)</option>
-                <option>Comercial (CPi)</option>
-                <option>Contratos (Cz)</option>
-                <option>Estoque (Cz)</option>
-                <option>Estoque (Jn)</option>
-                <option>Estoque (Ita)</option>
-                <option>Estoque (Art)</option>
-                <option>Faturamento (Cz)</option>
-                <option>Faturamento (Jn)</option>
-                <option>Faturamento (Ita)</option>
-                <option>Faturamento (Art)</option>
-                <option>Financeiro (Cz)</option>
-                <option>Financeiro (Jn)</option>
-                <option>Financeiro (Ita)</option>
-                <option>Financeiro (Art)</option>
-                <option>Laboratório de Apoio (Cz)</option>
-                <option>NAC (Cz)</option>
-                <option>NAC (Jn)</option>
-                <option>NAC (Ita)</option>
-                <option>NAC (Art)</option>
-                <option>NTO (Cz)</option>
-                <option>NTO (Jn)</option>
-                <option>NTO (Ita)</option>
-                <option>NTO (Art)</option>
-                <option>Patrimônio/Manutenção (Cz)</option>
-                <option>Qualidade (Cz)</option>
-                <option>Qualidade (Jn)</option>
-                <option>Qualidade (Ita)</option>
-                <option>Qualidade (Art)</option>
-                <option>Suprimentos (Cz)</option>
-                <option>Suprimentos (Jn)</option>
-                <option>Suprimentos (Ita)</option>
-                <option>Suprimentos (Art)</option>
-                <option>Tecnologia da Informação (Cz)</option>
+        <label>Setor</label>
+        <select name="setor" required>
+            <option value="">Selecione...</option>
+            <option>ATENDIMENTO (CZ)</option>
+            <option>ATENDIMENTO (JN)</option>
+            <option>ATENDIMENTO (ITA)</option>
+            <option>ATENDIMENTO (ART)</option>
+            <option>ATENDIMENTO (GOI)</option>
+            <option>ATENDIMENTO (CPI)</option>
+            <option>COMERCIAL (CZ)</option>
+            <option>COMERCIAL (JN)</option>
+            <option>COMERCIAL (ITA)</option>
+            <option>COMERCIAL (ART)</option>
+            <option>COMERCIAL (GOI)</option>
+            <option>COMERCIAL (CPI)</option>
         </select>
     </div>
 </div>
@@ -160,6 +130,10 @@ button {
 
 let contador = 0;
 
+function maiusculo(campo) {
+    campo.value = campo.value.toUpperCase();
+}
+
 function addDependente() {
     contador++;
 
@@ -172,7 +146,7 @@ function addDependente() {
         <div class="form-row">
             <div class="form-group">
                 <label>Nome</label>
-                <input type="text" name="nome_${contador}" required>
+                <input type="text" name="nome_${contador}" oninput="maiusculo(this)" required>
             </div>
 
             <div class="form-group">
@@ -190,11 +164,11 @@ function addDependente() {
             <div class="form-group">
                 <label>Parentesco</label>
                 <select name="parentesco_${contador}">
-                    <option>Filho(a)</option>
-                    <option>Cônjuge</option>
-                    <option>Avô</option>
-                    <option>Avó</option>
-                    <option>Outro</option>
+                    <option>FILHO(A)</option>
+                    <option>CÔNJUGE</option>
+                    <option>AVÔ</option>
+                    <option>AVÓ</option>
+                    <option>OUTRO</option>
                 </select>
             </div>
         </div>
@@ -252,23 +226,34 @@ document.getElementById("form").addEventListener("submit", function(e) {
     }
 
     btn.disabled = true;
-    status.innerText = "Enviando...";
+    status.innerText = "ENVIANDO...";
+
+    let formData = new FormData(this);
+
+    // 🔥 NÃO ALTERA CPF E DATA
+    for (let [key, value] of formData.entries()) {
+        if (key.startsWith("cpf") || key.startsWith("data")) continue;
+
+        if (typeof value === "string") {
+            formData.set(key, value.toUpperCase());
+        }
+    }
 
     fetch("https://script.google.com/macros/s/AKfycbxQM1RDwOMmDDoHZnatODOsRQV9N8NsvkG4fYlxOXYYwibGQySrFKoENZulZ1rxRQg/exec", {
         method: "POST",
-        body: new FormData(this)
+        body: formData
     })
     .then(res => res.text())
     .then(result => {
 
         if (result.startsWith("CPF_DUPLICADO")) {
             let nome = result.split("|")[1];
-            status.innerText = "❌ CPF já vinculado a " + nome;
+            status.innerText = "❌ CPF JÁ VINCULADO A " + nome;
             btn.disabled = false;
             return;
         }
 
-        status.innerText = "✅ Enviado com sucesso!";
+        status.innerText = "✅ ENVIADO COM SUCESSO!";
         setTimeout(() => location.reload(), 1500);
     });
 });
