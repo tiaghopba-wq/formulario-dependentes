@@ -160,17 +160,19 @@ function addDependente() {
 addDependente();
 
 function mascaraCPF(campo) {
-    let v = campo.value.replace(/\D/g, '');
-    v = v.replace(/(\d{3})(\d)/, '$1.$2');
-    v = v.replace(/(\d{3})(\d)/, '$1.$2');
-    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    campo.value = v;
-}
+    let cpf = campo.value.replace(/\D/g, '');
 
-function validarCPF(cpf) {
-    cpf = cpf.replace(/\D/g, '');
-    if (cpf.length !== 11) return false;
-    return true;
+    if (cpf.length > 11) cpf = cpf.slice(0, 11);
+
+    if (cpf.length > 9) {
+        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+    } else if (cpf.length > 6) {
+        cpf = cpf.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+    } else if (cpf.length > 3) {
+        cpf = cpf.replace(/(\d{3})(\d+)/, '$1.$2');
+    }
+
+    campo.value = cpf;
 }
 
 document.getElementById("form").addEventListener("submit", function(e) {
@@ -179,21 +181,17 @@ document.getElementById("form").addEventListener("submit", function(e) {
     let btn = document.getElementById("btnEnviar");
     let status = document.getElementById("status");
 
-    let cpfs = document.querySelectorAll("input[name^='cpf_']");
-
-    for (let input of cpfs) {
-        if (!validarCPF(input.value)) {
-            alert("CPF inválido");
-            return;
-        }
-    }
+    // 🔥 GARANTE CPF FORMATADO
+    document.querySelectorAll("input[name^='cpf_']").forEach(input => {
+        mascaraCPF(input);
+    });
 
     btn.disabled = true;
     status.innerText = "ENVIANDO...";
 
     let formData = new FormData(this);
 
-    // 🔥 NÃO ALTERA CPF E DATA
+    // 🔥 MAIÚSCULO (exceto CPF/data)
     for (let [key, value] of formData.entries()) {
         if (key.startsWith("cpf") || key.startsWith("data")) continue;
 
@@ -202,12 +200,12 @@ document.getElementById("form").addEventListener("submit", function(e) {
         }
     }
 
-    fetch("SUA_URL_AQUI", {
+    fetch("SUA_URL_DO_SCRIPT", {
         method: "POST",
         body: formData
     })
     .then(res => res.text())
-    .then(result => {
+    .then(() => {
         status.innerText = "✅ ENVIADO COM SUCESSO!";
         setTimeout(() => location.reload(), 1500);
     });
